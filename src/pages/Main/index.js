@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { FaBars, FaGithub, FaPlus, FaSpinner, FaTrash } from "react-icons/fa";
 import { Container, Form, SubmitButton, List, DeletButton } from "./style";
-
+import { Link } from "react-router-dom";
 import api from "../../services/api";
 
 export default function Main() {
@@ -11,19 +11,18 @@ export default function Main() {
   const [alert, setAlert] = useState(null);
 
   //DidMount - Buscar
-
   useEffect(() => {
     const repoStorage = localStorage.getItem("repos");
-
     if (repoStorage) {
       setRepositorios(JSON.parse(repoStorage));
     }
   }, []);
 
   //DidUpdate - Salvar Alteracoes
-
   useEffect(() => {
-    localStorage.setItem("repos", JSON.stringify(repositorios));
+    if (repositorios[0]) {
+      localStorage.setItem("repos", JSON.stringify(repositorios));
+    }
   }, [repositorios]);
 
   const handleSubmit = useCallback(
@@ -34,13 +33,13 @@ export default function Main() {
         setLoading(true);
         setAlert(null);
         try {
-          if (newRepo === "") {
+          if (!newRepo.trim()) {
             throw new Error("Voce precisa indicar um repositorio!");
           }
 
           const response = await api.get(`repos/${newRepo}`);
 
-          const hasRepo = repositorios.find((repo) => repo.name == newRepo);
+          const hasRepo = repositorios.find((repo) => repo.name === newRepo);
 
           if (hasRepo) {
             throw new Error("Repositorio duplicado!");
@@ -117,9 +116,9 @@ export default function Main() {
                 </DeletButton>
                 {repo.name}
               </span>
-              <a href="">
+              <Link to={`/repositorio/${encodeURIComponent(repo.name)}`}>
                 <FaBars size={14} />
-              </a>
+              </Link>
             </li>
           );
         })}

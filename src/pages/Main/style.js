@@ -95,9 +95,9 @@ export const List = styled.ul`
   }
 `;
 
-export const DeletButton = styled.button.attrs((props) => ({
+export const DeletButton = styled.button.attrs({
   type: "button",
-}))`
+})`
   background: transparent;
   color: #e82c44;
   border: 0;
