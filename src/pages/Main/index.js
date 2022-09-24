@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { FaBars, FaGithub, FaPlus, FaSpinner } from "react-icons/fa";
-import { Container, Form, SubmitButton, List } from "./style";
+import { FaBars, FaGithub, FaPlus, FaSpinner, FaTrash } from "react-icons/fa";
+import { Container, Form, SubmitButton, List, DeletButton } from "./style";
 
 import api from "../../services/api";
 
@@ -39,6 +39,15 @@ export default function Main() {
   function handleInputChange(e) {
     setNewRepo(e.target.value);
   }
+
+  const handleDelete = useCallback(
+    (repo) => {
+      const find = repositorios.filter((r) => r.name !== repo);
+      setRepositorios(find);
+    },
+    [repositorios]
+  );
+
   return (
     <Container>
       <h1>
@@ -49,7 +58,7 @@ export default function Main() {
       <Form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Adicionar Repositorios"
+          placeholder="Adicionar Repositorio / Projeto"
           value={newRepo}
           onChange={handleInputChange}
         />
@@ -67,7 +76,17 @@ export default function Main() {
         {repositorios.map((repo) => {
           return (
             <li key={repo.name}>
-              <span>{repo.name}</span>
+              <span>
+                <DeletButton>
+                  <FaTrash
+                    onClick={() => {
+                      handleDelete(repo.name);
+                    }}
+                    size={14}
+                  ></FaTrash>
+                </DeletButton>
+                {repo.name}
+              </span>
               <a href="">
                 <FaBars size={14} />
               </a>
