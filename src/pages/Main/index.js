@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { FaBars, FaGithub, FaPlus, FaSpinner, FaTrash } from "react-icons/fa";
-import { Container, Form, SubmitButton, List, DeletButton } from "./style";
+import { Container, Form, SubmitButton, List, DeletButton } from "./styles";
 import { Link } from "react-router-dom";
 import api from "../../services/api";
 
@@ -37,7 +37,7 @@ export default function Main() {
             throw new Error("Voce precisa indicar um repositorio!");
           }
 
-          const response = await api.get(`repos/${newRepo}`);
+          const response = await api.get(`/repos/${newRepo}`);
 
           const hasRepo = repositorios.find((repo) => repo.name === newRepo);
 
